@@ -43,7 +43,7 @@ oc.histo <- ggplot(oc, aes(size, fill = Treatment, colour = Treatment)) +
   scale_fill_manual("Spawn",breaks=c("Before spawn", "After spawn"),
                     values = c("red", "blue"),
                     labels = c("Before", "After")) +
-  labs(x = "oocyte size(µm^2)", y = "oocyte count/total count")+
+  labs(x = "oocyte size (µm^2)", y = "oocyte count/total count")+
   theme(panel.grid.minor = element_blank(), legend.position = "none", #legend.position = c(.87, .9),
         legend.background = element_rect(colour="gray"),
         legend.text = element_text(size=20, colour="black", face="bold"),
