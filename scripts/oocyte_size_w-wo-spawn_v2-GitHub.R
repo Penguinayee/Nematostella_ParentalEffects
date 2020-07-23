@@ -20,9 +20,9 @@ library(dplyr)
 #read data
 oc <- read.csv("OC_raw.csv", header=TRUE, sep=",", dec=".")
 
-
-#statistic analysis
-# Shapiro-Wilk normality test for normality:
+#Analyze individual oocytes
+##statistic analysis
+##Shapiro-Wilk normality test for normality:
 with(oc, shapiro.test(Size[Time == "Before"])) # p < 2.2e-16
 with(oc, shapiro.test(Size[Time == "After"])) # p < 2.2e-16
 ## The distribution of the data are significantly different from the normal distribution.
@@ -52,7 +52,7 @@ ggsave(filename= "oocyte-size-box.png",
 
 
 
-#use the mean oocyte size of each animal as one repeat
+#use average egg size for each female and comparing those pre and post spawn.
 
 b1.iv <- which(oc$Time == "Before" & oc$Animal == "1")
 b2.iv <- which(oc$Time == "Before" & oc$Animal == "2")
