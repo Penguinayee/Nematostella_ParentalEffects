@@ -20,37 +20,6 @@ library(dplyr)
 #read data
 oc <- read.csv("OC_raw.csv", header=TRUE, sep=",", dec=".")
 
-#Analyze individual oocytes
-##statistic analysis
-##Shapiro-Wilk normality test for normality:
-with(oc, shapiro.test(Size[Time == "Before"])) # p < 2.2e-16
-with(oc, shapiro.test(Size[Time == "After"])) # p < 2.2e-16
-## The distribution of the data are significantly different from the normal distribution.
-## So use non parametric two-samples Wilcoxon rank test in stead.
-
-wil <- compare_means(Size ~ Time, oc, method = "wilcox.test", paired = FALSE)
-wil$p # Print the p-value = 3.07427e-22, oocyte size is significant different
-
-
-# Reorder the groups order : change the order of the factor data$names
-oc$Time <- factor(oc$Time , levels=c("Before", "After"), ordered = TRUE)
-
-
-##boxplot of individual oocyte with stat
-oc.box <- ggplot(oc, aes(Time, Size, fill = Time)) + 
-  geom_boxplot(alpha = 0.4, colour = c("red", "blue")) +
-  scale_fill_manual(values=c("red", "blue")) +
-  stat_compare_means(data=oc,
-                     mapping=aes(x=Time, y=Size),
-                     label = "p", 
-                     method= "wilcox.test",
-                     label.x.npc = "center")
-oc.box
-ggsave(filename= "oocyte-size-box.png", 
-       width=8, height=8, units="in", dpi=300)
-
-
-
 
 #use average egg size for each female and comparing those pre and post spawn.
 
@@ -106,4 +75,35 @@ oc.box_2 <- ggplot(oc_mean, aes(Time_2, mean_per_ani, fill = Time_2)) +
                      size=6)
 oc.box_2
 ggsave(filename= "oocyte-size-box_per_animal.png", 
+       width=8, height=8, units="in", dpi=300)
+
+
+
+#Analyze individual oocytes
+##statistic analysis
+##Shapiro-Wilk normality test for normality:
+with(oc, shapiro.test(Size[Time == "Before"])) # p < 2.2e-16
+with(oc, shapiro.test(Size[Time == "After"])) # p < 2.2e-16
+## The distribution of the data are significantly different from the normal distribution.
+## So use non parametric two-samples Wilcoxon rank test in stead.
+
+wil <- compare_means(Size ~ Time, oc, method = "wilcox.test", paired = FALSE)
+wil$p # Print the p-value = 3.07427e-22, oocyte size is significant different
+
+
+# Reorder the groups order : change the order of the factor data$names
+oc$Time <- factor(oc$Time , levels=c("Before", "After"), ordered = TRUE)
+
+
+##boxplot of individual oocyte with stat
+oc.box <- ggplot(oc, aes(Time, Size, fill = Time)) + 
+  geom_boxplot(alpha = 0.4, colour = c("red", "blue")) +
+  scale_fill_manual(values=c("red", "blue")) +
+  stat_compare_means(data=oc,
+                     mapping=aes(x=Time, y=Size),
+                     label = "p", 
+                     method= "wilcox.test",
+                     label.x.npc = "center")
+oc.box
+ggsave(filename= "oocyte-size-box.png", 
        width=8, height=8, units="in", dpi=300)
